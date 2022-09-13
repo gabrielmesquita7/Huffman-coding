@@ -1,0 +1,4 @@
+build/app
+build/objects/src/tree.o
+build/objects/src/main.o
+.vscode/settings.json
