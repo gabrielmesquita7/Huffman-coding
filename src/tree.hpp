@@ -2,7 +2,12 @@
 #define TREE_HPP
 
 #include <iostream>
-#include <queue>
+#include <string>
+#include <map>
+#include <fstream>
+#include <vector>
+#include <sstream>
+#include <algorithm>
 
 using namespace std;
 
@@ -33,6 +38,5 @@ void antecessor(Tree **t, Tree *aux);
 void preordem(Tree *t);
 void central(Tree *t);
 void posordem(Tree *t);
-void widthPath(Tree *t);
 
 #endif
