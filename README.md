@@ -102,7 +102,8 @@ struct word_reader : ctype<char> // tokenizer
 > ```
 > A regra geral para formar os bits de uma palavra de código é, partindo da raiz, percorrer o caminho até a folha correspondente, de tal modo que, cada arco percorrido para a direita equivale, por exemplo, a um bit ’1’ na palavra de código e cada arco percorrido para a esquerda equivale a um bit ’0’. *Função recursiva*
 
-img do exemplo prefix
+![image](https://user-images.githubusercontent.com/55333375/191399844-096312d4-ea1b-4f0f-adbd-4482755f010f.png)
+
 
 > ```cpp
 > void BinaryEnconding();
