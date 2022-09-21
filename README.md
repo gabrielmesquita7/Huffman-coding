@@ -115,13 +115,15 @@ img do exemplo prefix
 # Saida
 ### É esperado uma print da codificação binária do arquivo e a confirmação da compressão do arquivo
 
-img saida
+![Captura de tela de 2022-09-20 23-16-40](https://user-images.githubusercontent.com/55333375/191399307-fff14dc8-b7bc-4fe2-b739-f5105bcf91a1.png)
+
 
 # Resultado
 ### Foi observado a seguinte diminuição do tamanho do arquivo em relação ao original: *625 bytes* *->* *348 bytes*, fazendo alguns cálculos foi constatado uma diminuição de *44,32%* do tamanho do arquivo.
 
 > Calculo:
-> img
+> 
+![Captura de tela de 2022-09-20 23-18-14](https://user-images.githubusercontent.com/55333375/191399467-6b4f34eb-938f-4a03-9fdb-94d561883e31.png)
 
 # Executar
 * Como executar:
