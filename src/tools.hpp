@@ -3,7 +3,7 @@
 
 #include "tree.hpp"
 
-struct word_reader : ctype<char>
+struct word_reader : ctype<char> // tokenizer
 {
     word_reader(string const &delims) : ctype<char>(get_table(delims)) {}
     static ctype_base::mask const *get_table(string const &delims)
@@ -16,7 +16,7 @@ struct word_reader : ctype<char>
     }
 };
 
-template <typename KeyType, typename ValueType>
+template <typename KeyType, typename ValueType> // max(RP)
 pair<KeyType, ValueType> get_max(const map<KeyType, ValueType> &x)
 {
     using pairtype = pair<KeyType, ValueType>;
@@ -24,7 +24,7 @@ pair<KeyType, ValueType> get_max(const map<KeyType, ValueType> &x)
                         { return p1.second < p2.second; });
 }
 
-template <typename KeyType, typename ValueType>
+template <typename KeyType, typename ValueType> // min(RP)
 pair<KeyType, ValueType> get_min(const map<KeyType, ValueType> &x)
 {
     using pairtype = pair<KeyType, ValueType>;
@@ -32,6 +32,8 @@ pair<KeyType, ValueType> get_min(const map<KeyType, ValueType> &x)
                         { return p1.second < p2.second; });
 }
 
-void normalize_recurrence();
+void normalize_recurrence(Huffman &h);
+void BinarySequence(Tree *HuffmanTree, string Cod);
+void BinaryEnconding();
 
 #endif

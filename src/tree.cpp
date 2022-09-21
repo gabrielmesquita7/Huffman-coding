@@ -1,155 +1,109 @@
 #include "tree.hpp"
 
-Tree *CreateTree()
+void CreateHuffman(Huffman *h)
 {
-  return NULL;
+  h->inicio = NULL;
 }
 
-bool TVazia(Tree **t)
-{
-  return *t == NULL;
-}
-
-void insertTree(Tree **t, Record r)
-{
-
-  if (TVazia(t))
-  {
-    *t = (Tree *)malloc(sizeof(Tree));
-    (*t)->esq = NULL;
-    (*t)->dir = NULL;
-    (*t)->reg = r;
-  }
-  else
-  {
-
-    if (r.key < (*t)->reg.key)
-    {
-      insertTree(&(*t)->esq, r);
-    }
-
-    if (r.key > (*t)->reg.key)
-    {
-      insertTree(&(*t)->dir, r);
-    }
-  }
-}
-
-void pesquisa(Tree **t, Tree **aux, Record r)
-{
-
-  if (*t == NULL)
-  {
-    cout << "[ERROR]: Node not found!" << endl;
-    return;
-  }
-
-  if ((*t)->reg.key > r.key)
-  {
-    pesquisa(&(*t)->esq, aux, r);
-    return;
-  }
-  if ((*t)->reg.key < r.key)
-  {
-    pesquisa(&(*t)->dir, aux, r);
-    return;
-  }
-
-  *aux = *t;
-}
-
-int isInTree(Tree *t, Record r)
-{
-
-  if (t == NULL)
-  {
-    return 0;
-  }
-
-  return t->reg.key == r.key || isInTree(t->esq, r) || isInTree(t->dir, r);
-}
-
-void antecessor(Tree **t, Tree *aux)
-{
-
-  if ((*t)->dir != NULL)
-  {
-    antecessor(&(*t)->dir, aux);
-    return;
-  }
-
-  aux->reg = (*t)->reg;
-  aux = *t;
-  *t = (*t)->esq;
-  free(aux);
-}
-
-void removeTree(Tree **t, Record r)
+void InsertData(Huffman *h, Tree *no)
 {
   Tree *aux;
 
-  if (*t == NULL)
+  if (h->inicio == NULL)
   {
-    cout << "[ERROR]: Record not found!!!" << endl;
-    return;
+    h->inicio = no;
   }
-
-  if (r.key < (*t)->reg.key)
+  else if (no->freq < h->inicio->freq)
   {
-    removeTree(&(*t)->esq, r);
-    return;
+    no->prox = h->inicio;
+    h->inicio = no;
   }
-  if (r.key > (*t)->reg.key)
+  else
   {
-    removeTree(&(*t)->dir, r);
-    return;
-  }
-
-  if ((*t)->dir == NULL)
-  {
-    aux = *t;
-    *t = (*t)->esq;
-    free(aux);
-    return;
-  }
-
-  if ((*t)->esq != NULL)
-  {
-    antecessor(&(*t)->esq, *t);
-    return;
-  }
-
-  aux = *t;
-  *t = (*t)->dir;
-  free(aux);
-}
-
-void preordem(Tree *t)
-{
-  if (!(t == NULL))
-  {
-    cout << "  " << t->reg.key;
-    preordem(t->esq);
-    preordem(t->dir);
+    aux = h->inicio;
+    while (aux->prox && aux->prox->freq <= no->freq)
+    {
+      aux = aux->prox;
+    }
+    no->prox = aux->prox;
+    aux->prox = no;
   }
 }
 
-void central(Tree *t)
+Tree *removeTree(Huffman *h)
 {
-  if (!(t == NULL))
+  Tree *aux = NULL;
+
+  aux = h->inicio;
+  h->inicio = aux->prox;
+  return aux;
+}
+
+void PrintTree(Tree *no, int altura)
+{
+  if (no != NULL)
   {
-    central(t->esq);
-    cout << "  " << t->reg.key;
-    central(t->dir);
+    int i = 0;
+    while (i < altura)
+    {
+      cout << "|-> ";
+      i++;
+    }
+    if (altura == 0)
+    {
+      cout << "Root: ";
+    }
+
+    cout << no->data << "::" << no->freq << endl;
+    altura++;
+
+    PrintTree(no->esq, altura);
+    PrintTree(no->dir, altura);
   }
 }
 
-void posordem(Tree *t)
+Tree *HuffmanTree(Huffman *h)
 {
-  if (!(t == NULL))
+  Tree *node1 = new Tree;
+  Tree *node2 = new Tree;
+
+  Tree *aux;
+
+  while (h->inicio->prox != NULL)
   {
-    posordem(t->esq);
-    posordem(t->dir);
-    cout << "  " << t->reg.key;
+    node1 = removeTree(h);
+    node2 = removeTree(h);
+
+    Tree *pai = new Tree;
+
+    pai->data = '#';
+    pai->freq = (node1->freq + node2->freq);
+    pai->esq = node1;
+    pai->dir = node2;
+
+    aux = h->inicio;
+    while (true)
+    {
+      if (aux == NULL)
+      {
+        h->inicio = pai;
+        pai->prox = NULL;
+        break;
+      }
+      else if (aux->prox == NULL)
+      {
+        pai->prox = aux->prox;
+        aux->prox = pai;
+        break;
+      }
+      else if (aux->prox->freq >= pai->freq)
+      {
+        pai->prox = aux->prox;
+        aux->prox = pai;
+        break;
+      }
+      aux = aux->prox;
+    }
   }
+  return h->inicio;
 }

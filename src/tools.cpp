@@ -1,7 +1,10 @@
 #include "tools.hpp"
 
-void normalize_recurrence()
+map<string, string> binarycods;
+
+void normalize_recurrence(Huffman &h)
 {
+    Tree *no;
     bool stw;
     vector<string> stopwords;
     stopwords.insert(stopwords.end(), "a");
@@ -59,6 +62,73 @@ void normalize_recurrence()
 
     for (map<string, float>::iterator wit = categories.begin(); wit != categories.end(); ++wit)
     {
-        cout << "word: " << wit->first << "\t\t\t\t" << wit->second << endl;
+        no = new Tree;
+        no->data = wit->first;
+        no->freq = wit->second;
+        no->esq = NULL;
+        no->dir = NULL;
+        no->prox = NULL;
+        InsertData(&h, no);
     }
+}
+
+void BinarySequence(Tree *HuffmanTree, string Cod)
+{
+    if (HuffmanTree->data != "#")
+    {
+        binarycods[HuffmanTree->data] = Cod;
+    }
+    if (HuffmanTree->esq != NULL)
+    {
+        BinarySequence(HuffmanTree->esq, Cod + '0');
+    }
+    if (HuffmanTree->dir != NULL)
+    {
+        BinarySequence(HuffmanTree->dir, Cod + '1');
+    }
+}
+
+void BinaryEnconding()
+{
+    vector<bool> sequence;
+    char Ctrue = '1';
+    char Cfalse = '0';
+    FILE *file;
+    file = fopen("compressed.bin", "wb");
+    if (!file)
+    {
+        cout << "Nao foi possivel abrir o arquivo comprimido! Saindo..." << endl;
+        return;
+    }
+    string BinaryCode;
+    for (map<string, string>::iterator wit = binarycods.begin(); wit != binarycods.end(); ++wit)
+    {
+        // cout << wit->first << "=>" << wit->second << endl; //print das palavras e seus respectivos codigos binarios
+        BinaryCode += wit->second;
+    }
+
+    cout << "\n--- CODIFICACAO BINARIA DO ARQUIVO: ---\n"
+         << endl;
+    cout << BinaryCode << endl
+         << endl;
+
+    for (int i = 0; i < int(BinaryCode.length()); i++)
+    {
+        if (BinaryCode.at(i) == Ctrue)
+        {
+            sequence.push_back(true);
+        }
+        else if (BinaryCode.at(i) == Cfalse)
+        {
+            sequence.push_back(false);
+        }
+    }
+
+    for (auto &&i : sequence)
+    {
+        bool aux = sequence[i];
+        fwrite(&aux, sizeof(bool), 1, file);
+    }
+    sequence.clear();
+    fclose(file);
 }

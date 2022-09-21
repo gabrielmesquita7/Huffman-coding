@@ -11,32 +11,25 @@
 
 using namespace std;
 
-typedef struct Record Record;
 typedef struct Tree Tree;
-
-struct Record
-{
-	int key;
-	int value;
-};
+typedef struct Huffman Huffman;
 
 struct Tree
 {
-	Record reg;
-	Tree *esq, *dir;
+	string data;
+	float freq;
+	Tree *esq, *dir, *prox;
 };
 
-Tree *CreateTree();
-bool TVazia(Tree **t);
-void insertTree(Tree **t, Record r);
-void pesquisa(Tree **t, Tree **aux, Record r);
-int isInTree(Tree *t, Record r);
+struct Huffman
+{
+	Tree *inicio;
+};
 
-void removeTree(Tree **t, Record r);
-void antecessor(Tree **t, Tree *aux);
-
-void preordem(Tree *t);
-void central(Tree *t);
-void posordem(Tree *t);
+void CreateHuffman(Huffman *h);
+void InsertData(Huffman *h, Tree *no);
+Tree *removeTree(Huffman *h);
+void PrintTree(Tree *no, int altura);
+Tree *HuffmanTree(Huffman *h);
 
 #endif
