@@ -2,7 +2,6 @@
 
 int main()
 {
-     map<string, string> binarycods;
      Huffman h;
      Tree *finalTree = new Tree;
 
